@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace表示命名空间，用来标识该Mapper文件-->
+<mapper namespace="com.fhc.dao.mapper">
+    <select id="selectByPage" resultType="Product">
+        select pid,pname,shop_price,pdesc,is_hot,pdate from product
+        <where>
+            <if test="search !=null and search !=''">
+                pname like '%${search}%'
+            </if>
+        </where>
+        limit #{offset},#{limit}
+
+    </select>
+    <select id="selectByCount" resultType="Long">
+        select count(*) from product
+        <where>
+            <if test="search !=null and search !=''">
+                pname like '%${search}%'
+            </if>
+        </where>
+    </select>
+    <delete id="deleteById">
+        delete from product where pid=#{pid}
+    </delete>
+    <update id="update" parameterType="Product">
+        update product set
+        pname=#{pname},shop_price=#{shop_price},pdesc=#{pdesc},is_hot=#{is_hot},pdate=#{pdate}
+        where pid=#{pid}
+    </update>
+    <insert id="insert" parameterType="Product">
+        insert into product values(null,#{pname},#{shop_price},#{pdesc},#{is_hot},#{pdate})
+    </insert>
+
+</mapper>
